@@ -1,20 +1,25 @@
 module.exports = {
-    async getIndicatorData(TradingView) {
+    async getIndicatorData(TradingView, symbol, timeframe='240') {
         const client = new TradingView.Client();
         const chart = new client.Session.Chart();
-        chart.setMarket('BINANCE:FTMUSDT', {
-            timeframe: '240',
-            range: 1,
+        chart.setMarket(symbol, {
+            timeframe: timeframe,
+            range: 50,
+            // to: 1694044800,
         });
 
-        function getIndicData(indicator) {
+        function parseData(indicator) {
             return new Promise((res) => {
                 const STD = new chart.Study(indicator);
 
                 console.log(`Getting "${indicator.description}"...`);
-
                 STD.onUpdate(() => {
-                    res(STD.periods);
+                    let result = [];
+                    for (let i = 0; i < chart.periods.length; i++) {
+                        let mergedObject = { ...STD.periods[i], ...chart.periods[i] };
+                        result.push(mergedObject);
+                    }
+                    res(result);
                     console.log(`"${indicator.description}" done !`);
                 });
             });
@@ -30,6 +35,7 @@ module.exports = {
             let filteredData = data.map(x => {
               return {
                 time: x['$time'],
+                datetime: new Date(x['$time'] * 1000),
                 macd: x['MACD'],
                 highest: x['highest'],
                 highest_join: x['highestjoin'],
@@ -39,6 +45,10 @@ module.exports = {
                 divergence_HH: x['divergence_HH'],
                 hidden_LL: x['hidden_LL'],
                 hidden_HH: x['hidden_HH'],
+                max: x['max'],
+                min: x['min'],
+                open: x['open'],
+                close: x['close'],
               };
             }).filter(x => {
               return propsToCheck.some(prop => x[prop] !== infValue);
@@ -46,25 +56,24 @@ module.exports = {
 
             return filteredData.map(record => {
                 for (const key in record) {
-                    if (!['time', 'macd'].includes(key) && record[key] != infValue) {
-                        record['value'] = record[key];
+                    if (!['time', 'datetime', 'macd', 'webtime', 'max', 'min', 'open', 'close'].includes(key) && record[key] != infValue) {
+                        record['scope'] = key;
                         break;
                     }
                 }
                 return record;
             });
-          }
+        }
 
         try {
             console.log('Getting all indicators...');
 
             const indicData = await Promise.all([
                 await TradingView.getIndicator('PUB;6FqFc5a2HcrkDz73cuXxANgR7A7WfKdU'),
-            ].map(getIndicData));
+            ].map(parseData));
 
             let processedData = processIndicatorData(indicData[0]);
-            
-            // console.log(processedData);
+
             console.log('All done !');
 
             client.end();
@@ -74,5 +83,5 @@ module.exports = {
             console.error(error);
             throw new Error('Failed to get indicator data');
         }
-    }
+    },
 }

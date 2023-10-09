@@ -5,8 +5,14 @@ const getIndicatorData = require('./functions/GetIndicator');
 
 app.get('/', async (req, res) => {
     try {
-        const data = await getIndicatorData.getIndicatorData(TradingView);
-        res.json(data);
+        let symbol = 'BINANCE:OPUSDT';
+        let timeframe = '240';
+        const data = await getIndicatorData.getIndicatorData(TradingView, symbol, timeframe);
+        res.json({
+            success: true,
+            count: data.length,
+            data: data
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({

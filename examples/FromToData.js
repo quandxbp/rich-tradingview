@@ -9,10 +9,10 @@ const TradingView = require('../main');
 const client = new TradingView.Client();
 
 const chart = new client.Session.Chart();
-chart.setMarket('BINANCE:BTCEUR', {
+chart.setMarket('BINANCE:FTMUSDT', {
   timeframe: '240',
-  range: 2, // Can be positive to get before or negative to get after
-  to: 1600000000,
+  range: 10, // Can be positive to get before or negative to get after
+  // to: Math.round(Date.now() / 1000) - 86400 * 1,
 });
 
 // This works with indicators
@@ -22,8 +22,8 @@ TradingView.getIndicator('STD;Supertrend').then(async (indic) => {
   const SUPERTREND = new chart.Study(indic);
 
   SUPERTREND.onUpdate(() => {
-    console.log('Prices periods:', chart.periods);
-    console.log('Study periods:', SUPERTREND.periods);
+    console.log('Prices periods:', chart.periods.length);
+    // console.log('Study periods:', SUPERTREND.periods);
     client.end();
   });
 });
