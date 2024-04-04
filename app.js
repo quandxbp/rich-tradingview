@@ -3,13 +3,15 @@ const app = express();
 const TradingView = require('./main');
 const getIndicatorData = require('./functions/GetIndicator');
 
-app.get('/', async (req, res) => {
+app.get('/:symbol', async (req, res) => {
     try {
-        let symbol = 'BINANCE:OPUSDT';
-        let timeframe = '240';
-        const data = await getIndicatorData.getIndicatorData(TradingView, symbol, timeframe);
+        // let symbol = 'BINANCE:OPUSDT';
+        let symbol = req.params.symbol;
+        let timeframe = '15';
+        const data = await getIndicatorData.getMacd(TradingView, symbol, timeframe);
         res.json({
             success: true,
+            symbol: symbol,
             count: data.length,
             data: data
         });
