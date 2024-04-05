@@ -15,6 +15,7 @@ module.exports = {
                 console.log(`Getting "${indicator.description}"...`);
                 STD.onUpdate(() => {
                     let result = [];
+                    console.log(STD.periods);
                     for (let i = 0; i < chart.periods.length; i++) {
                         let mergedObject = { ...STD.periods[i], ...chart.periods[i] };
                         result.push(mergedObject);

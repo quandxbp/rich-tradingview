@@ -13,6 +13,7 @@ app.get('/:symbol', async (req, res) => {
             success: true,
             symbol: symbol,
             count: data.length,
+            symbol: symbol,
             data: data
         });
     } catch (error) {
