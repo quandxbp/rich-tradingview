@@ -15,6 +15,8 @@ app.get('/:symbol', async (req, res) => {
             symbol: symbol,
             count: data.length,
             symbol: symbol,
+            timeframe: timeframe,
+            range: range,
             data: data
         });
     } catch (error) {

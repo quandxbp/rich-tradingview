@@ -93,7 +93,6 @@ module.exports = {
         chart.setMarket(symbol, {
             timeframe: timeframe,
             range: range,
-            // to: 1694044800,
         });
 
         function parseData(indicator) {
