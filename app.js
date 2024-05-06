@@ -5,10 +5,11 @@ const getIndicatorData = require('./functions/GetIndicator');
 
 app.get('/:symbol', async (req, res) => {
     try {
-        // let symbol = 'BINANCE:OPUSDT';
         let symbol = req.params.symbol;
-        let timeframe = '15';
-        const data = await getIndicatorData.getMacd(TradingView, symbol, timeframe);
+        let timeframe = req.query.timeframe || '15';
+        let range = req.query.range || '50';
+
+        const data = await getIndicatorData.getMacd(TradingView, symbol, timeframe, range);
         res.json({
             success: true,
             symbol: symbol,

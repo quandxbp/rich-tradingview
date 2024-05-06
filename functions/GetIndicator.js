@@ -87,12 +87,12 @@ module.exports = {
     },
 
     // Get Basic MACD
-    async getMacd(TradingView, symbol, timeframe='15') {
+    async getMacd(TradingView, symbol, timeframe='15', range=50) {
         const client = new TradingView.Client();
         const chart = new client.Session.Chart();
         chart.setMarket(symbol, {
             timeframe: timeframe,
-            range: 10,
+            range: range,
             // to: 1694044800,
         });
 
