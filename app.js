@@ -7,7 +7,7 @@ app.get('/:symbol', async (req, res) => {
     try {
         let symbol = req.params.symbol;
         let timeframe = req.query.timeframe || '15';
-        let range = req.query.range || '50';
+        let range = parseInt(req.query.range, 10) || 20;
 
         const data = await getIndicatorData.getMacd(TradingView, symbol, timeframe, range);
         
@@ -17,7 +17,6 @@ app.get('/:symbol', async (req, res) => {
             count: data.length,
             symbol: symbol,
             timeframe: timeframe,
-            range: range,
             data: data
         });
     } catch (error) {
