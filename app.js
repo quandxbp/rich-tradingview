@@ -10,6 +10,7 @@ app.get('/:symbol', async (req, res) => {
         let range = req.query.range || '50';
 
         const data = await getIndicatorData.getMacd(TradingView, symbol, timeframe, range);
+        
         res.json({
             success: true,
             symbol: symbol,
