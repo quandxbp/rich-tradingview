@@ -112,6 +112,12 @@ module.exports = {
             });
         }
 
+        function isDoji(data, percentage = 10) {
+            let threshold = (data.max - data.min) * (percentage / 100);
+            let diff = Math.abs(data.open - data.close);
+            return diff <= threshold;
+        }
+
         function processIndicatorData(data) {
             
             let filteredData = data.map(x => {
@@ -126,6 +132,7 @@ module.exports = {
                 close: x['close'],
                 label: x['open'] > x['close'] ? "GREEN" : "RED",
                 macd_trend: x['MACD'] > x['signal'] ? "UP" : "DOWN",
+                is_doji: isDoji(x),
               };
             });
 
