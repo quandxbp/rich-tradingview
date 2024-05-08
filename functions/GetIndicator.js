@@ -118,8 +118,17 @@ module.exports = {
             return diff <= threshold;
         }
 
+        function isGap(data) {
+            upper = data.open > data.close ? data.open : data.close;
+            lower = data.open < data.close ? data.open : data.close;
+
+            inside = Math.abs(data.open - data.close);
+            outside = Math.abs(data.max - upper) + Math.abs(data.min - lower);
+            return inside < outside;
+        }
+
+        
         function processIndicatorData(data) {
-            
             let filteredData = data.map(x => {
               return {
                 time: x['$time'],
@@ -133,6 +142,7 @@ module.exports = {
                 label: x['open'] > x['close'] ? "GREEN" : "RED",
                 macd_trend: x['MACD'] > x['signal'] ? "UP" : "DOWN",
                 is_doji: isDoji(x),
+                is_gap: isGap(x),
               };
             });
 
