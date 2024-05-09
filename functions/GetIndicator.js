@@ -119,6 +119,8 @@ module.exports = {
         }
 
         function isGap(data) {
+            if (data.close >= data.max || data.close <= data.min) return false;
+            
             upper = data.open > data.close ? data.open : data.close;
             lower = data.open < data.close ? data.open : data.close;
 
