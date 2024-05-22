@@ -99,7 +99,7 @@ module.exports = {
             return new Promise((res) => {
                 const STD = new chart.Study(indicator);
 
-                console.log(`Getting "${indicator.description}"...`);
+                console.log(`Getting "${symbol}"...`);
                 STD.onUpdate(() => {
                     let result = [];
                     for (let i = 0; i < chart.periods.length; i++) {
