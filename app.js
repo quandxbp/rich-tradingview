@@ -31,9 +31,15 @@ app.get('/:symbol', async (req, res) => {
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            error: 'Internal server error'
-        });
+        if (error.code === 'ECONNREFUSED') {
+            res.status(503).json({
+                error: 'Service unavailable'
+            });
+        } else {
+            res.status(500).json({
+                error: 'Internal server error'
+            });
+        }
     }
 });
 
