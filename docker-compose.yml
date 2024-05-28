@@ -3,6 +3,7 @@ services:
   web:
     build: .
     command: npm run dev
+    restart: unless-stopped
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
