@@ -255,14 +255,10 @@ module.exports = {
   async getIndicator(id, version = 'last') {
     const indicID = id.replace(/ |%/g, '%25');
 
-    try {
-      let { data } = await request({
-        host: 'pine-facade.tradingview.com',
-        path: `/pine-facade/translate/${indicID}/${version}`,
-      }, true);
-    } catch (e) {
-      throw new Error(`Error when requesting to /pine-facade/translate/${indicID}/${version}`);
-    }
+    let { data } = await request({
+      host: 'pine-facade.tradingview.com',
+      path: `/pine-facade/translate/${indicID}/${version}`,
+    }, true);
 
     try {
       data = JSON.parse(data);
