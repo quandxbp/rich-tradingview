@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon app.js",
     "test": "node test",
-    "dev": "nodemon app.js"
+    "dev": "nodemon -x 'node app.js || touch app.js'"
   },
   "engines": {
     "node": ">=14.0.0"
